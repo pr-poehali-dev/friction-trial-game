@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Character = 'judge' | 'prosecutor' | 'defense' | null;
+type Tab = 'main' | 'game' | 'theory';
 
 const Index = () => {
   const [activeCharacter, setActiveCharacter] = useState<Character>(null);
-  const [currentTab, setCurrentTab] = useState('main');
+  const [currentTab, setCurrentTab] = useState<Tab>('main');
 
   const characters = [
     {
@@ -95,14 +95,29 @@ const Index = () => {
           </p>
         </div>
 
-        <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-8">
-            <TabsTrigger value="main">Главная</TabsTrigger>
-            <TabsTrigger value="game">Игра</TabsTrigger>
-            <TabsTrigger value="theory">Теория</TabsTrigger>
-          </TabsList>
+        <div className="flex justify-center gap-2 mb-8">
+          <Button
+            variant={currentTab === 'main' ? 'default' : 'outline'}
+            onClick={() => setCurrentTab('main')}
+          >
+            Главная
+          </Button>
+          <Button
+            variant={currentTab === 'game' ? 'default' : 'outline'}
+            onClick={() => setCurrentTab('game')}
+          >
+            Игра
+          </Button>
+          <Button
+            variant={currentTab === 'theory' ? 'default' : 'outline'}
+            onClick={() => setCurrentTab('theory')}
+          >
+            Теория
+          </Button>
+        </div>
 
-          <TabsContent value="main" className="space-y-8">
+        {currentTab === 'main' && (
+          <div className="space-y-8 animate-fade-in">
             <Card className="border-primary/20">
               <CardHeader>
                 <CardTitle className="text-3xl">О проекте</CardTitle>
@@ -145,9 +160,11 @@ const Index = () => {
                 Начать судебное заседание
               </Button>
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          <TabsContent value="game" className="space-y-8">
+        {currentTab === 'game' && (
+          <div className="space-y-8 animate-fade-in">
             <div className="grid md:grid-cols-3 gap-6">
               {characters.map((char) => (
                 <Card
@@ -292,9 +309,11 @@ const Index = () => {
                 </CardContent>
               </Card>
             )}
-          </TabsContent>
+          </div>
+        )}
 
-          <TabsContent value="theory" className="space-y-8">
+        {currentTab === 'theory' && (
+          <div className="space-y-8 animate-fade-in">
             <Card>
               <CardHeader>
                 <CardTitle className="text-3xl">Теория силы трения</CardTitle>
@@ -318,8 +337,10 @@ const Index = () => {
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="types">
                     <AccordionTrigger className="text-xl">
-                      <Icon name="List" className="mr-2" />
-                      Виды трения
+                      <div className="flex items-center">
+                        <Icon name="List" className="mr-2" />
+                        Виды трения
+                      </div>
                     </AccordionTrigger>
                     <AccordionContent className="space-y-4 pt-4">
                       <div className="grid md:grid-cols-3 gap-4">
@@ -344,8 +365,10 @@ const Index = () => {
 
                   <AccordionItem value="factors">
                     <AccordionTrigger className="text-xl">
-                      <Icon name="Settings" className="mr-2" />
-                      Факторы, влияющие на трение
+                      <div className="flex items-center">
+                        <Icon name="Settings" className="mr-2" />
+                        Факторы, влияющие на трение
+                      </div>
                     </AccordionTrigger>
                     <AccordionContent className="space-y-4 pt-4">
                       <div className="space-y-3">
@@ -379,8 +402,10 @@ const Index = () => {
 
                   <AccordionItem value="examples">
                     <AccordionTrigger className="text-xl">
-                      <Icon name="Calculator" className="mr-2" />
-                      Примеры расчётов
+                      <div className="flex items-center">
+                        <Icon name="Calculator" className="mr-2" />
+                        Примеры расчётов
+                      </div>
                     </AccordionTrigger>
                     <AccordionContent className="space-y-4 pt-4">
                       <div className="p-4 bg-secondary/10 rounded-lg">
@@ -423,8 +448,8 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
       </div>
     </div>
   );
